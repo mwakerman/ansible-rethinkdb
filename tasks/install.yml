@@ -15,7 +15,8 @@
 
 - name: Add official APT repository
   when: ansible_os_family == 'Debian'
-  sudo: yes
+  become: yes
+  become_method: sudo
   register: _repo
   apt_repository:
     repo: "deb http://download.rethinkdb.com/apt {{ansible_distribution_release}} main"
@@ -26,7 +27,8 @@
 
 - name: Adding APT repository key
   when: ansible_os_family == 'Debian'
-  sudo: yes
+  become: yes
+  become_method: sudo
   register: _repo_key
   apt_key:
     url: http://download.rethinkdb.com/apt/pubkey.gpg
@@ -37,7 +39,8 @@
 
 - name: Updating package list
   when: ansible_pkg_mgr == 'apt' and (_repo_key.changed or _repo.changed)
-  sudo: yes
+  become: yes
+  become_method: sudo
   apt:
     update_cache: yes
   tags:
@@ -47,7 +50,8 @@
 
 - name: Install RethinkDB
   when: ansible_os_family == 'Debian'
-  sudo: yes
+  become: yes
+  become_method: sudo
   apt:
     name: "rethinkdb"
   tags:
@@ -61,7 +65,8 @@
 
 - name: Add official YUM repository
   when: ansible_os_family == 'RedHat'
-  sudo: yes
+  become: yes
+  become_method: sudo
   register: _repo
   apt_repository:
     repo: "http://download.rethinkdb.com/centos/6/{{ansible_distribution_release}}/rethinkdb.repo"
@@ -72,7 +77,8 @@
 
 - name: Install RethinkDB
   when: ansible_os_family == 'RedHat'
-  sudo: yes
+  become: yes
+  become_method: sudo
   yum:
     name: "rethinkdb"
   tags:
