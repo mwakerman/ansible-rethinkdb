@@ -15,7 +15,7 @@
   become_method: sudo
   service:
     name: "{{rethinkdb_service_name}}"
-    state: running
+    state: started
   tags:
     - init
     - rethinkdb
